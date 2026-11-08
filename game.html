@@ -61,7 +61,7 @@ function loadPixi(){
  if(window.PIXI)return Promise.resolve(window.PIXI);
  if(pixiLoader)return pixiLoader;
  pixiLoader=new Promise(resolve=>{let script=document.createElement('script'),done=false;
-  const finish=value=>{if(!done){done=true;resolve(value)}};script.src='https://cdn.jsdelivr.net/npm/pixi.js@7.4.3/dist/pixi.min.js';script.onload=()=>finish(window.PIXI||null);script.onerror=()=>finish(null);document.head.appendChild(script);setTimeout(()=>finish(null),7000)});
+  const finish=value=>{if(!done){done=true;resolve(value)}};script.src='https://cdn.jsdelivr.net/npm/pixi.js-legacy@7.4.3/dist/pixi-legacy.min.js';script.onload=()=>finish(window.PIXI||null);script.onerror=()=>finish(null);document.head.appendChild(script);setTimeout(()=>finish(null),7000)});
  return pixiLoader;
 }
 function stopPixiScene(){pixiEpoch++;if(pixiLocal){try{pixiLocal.destroy(true,{children:true,texture:true,baseTexture:true})}catch(e){}pixiLocal=null}localWorld.classList.remove('pixi-active')}
