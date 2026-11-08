@@ -89,7 +89,7 @@ async function startPixiScene(day){
   let palettes={city:[0xb5d8d4,0xe8d6b5,0x9ab89c,0x627e76],coast:[0xb5dbdf,0xe6dab9,0x86b8af,0x628f85],autumn:[0xc8dadd,0xf1d4a6,0xb39e72,0x7e8363],mountain:[0xc2d8dc,0xead6b7,0x829c83,0x5e7b6c],nagano:[0xc3d7dc,0xe8d5b5,0x94a28b,0x718477],oldtown:[0xb6d7d2,0xead7b9,0x9ab18d,0x6b8979]};
   let c=palettes[dayTheme],base=new P.Graphics();app.stage.addChild(base);
   // A full painted landscape supplies the setting; the existing shapes remain a readable fallback.
-  const localBackdrop=new Image();localBackdrop.onload=()=>{if(pixiLocal!==app||localIndex!==day)return;try{let bg=new P.Sprite(P.Texture.from(localBackdrop));bg.width=1880;bg.height=600;app.stage.addChildAt(bg,0);base.alpha=.22}catch(e){console.warn('local background fallback',e)}};localBackdrop.src='assets/journey-painted-hero.svg';
+  const localBackdrop=new Image();localBackdrop.onload=()=>{if(pixiLocal!==app||localIndex!==day)return;try{let bg=new P.Sprite(P.Texture.from(localBackdrop));bg.width=1880;bg.height=600;app.stage.addChildAt(bg,0);base.alpha=.22}catch(e){console.warn('local background fallback',e)}};localBackdrop.src='assets/journey-stage.svg';
   const rect=(g,x,y,w,h,color,alpha=1)=>{g.beginFill(color,alpha);g.drawRect(x,y,w,h);g.endFill()};
   const round=(g,x,y,w,h,r,color,alpha=1)=>{g.beginFill(color,alpha);g.drawRoundedRect(x,y,w,h,r);g.endFill()};
   const ell=(g,x,y,w,h,color,alpha=1)=>{g.beginFill(color,alpha);g.drawEllipse(x,y,w,h);g.endFill()};
