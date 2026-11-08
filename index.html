@@ -186,7 +186,7 @@ prev.addEventListener('click',()=>render(index-1));next.addEventListener('click'
 })();
 </script><style id="real-book-redesign">
 body{background:#151e24;color:#f4eee1;font-family:Georgia,"Noto Serif TC","Songti TC",serif}
-body>header,body>nav,body>footer{display:none!important} main.wrap{max-width:1100px!important;padding:12px 12px 110px!important}
+body>header,body>nav,body>footer{display:none!important} main.wrap > :not(#realbook){display:none!important} main.wrap{max-width:1100px!important;padding:12px 12px 110px!important}
 .quickstart,.visual-guide,.booklet{display:none!important}
 #realbook{color:#f4eee1;position:relative;max-width:970px;margin:0 auto}
 .book-chrome{display:flex;justify-content:space-between;align-items:center;color:#d7c6a2;font:600 12px/1.4 system-ui,sans-serif;letter-spacing:.12em;padding:15px 5px}
