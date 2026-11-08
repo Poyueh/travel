@@ -83,7 +83,7 @@ async function startPixiScene(day){
   if(dayTheme==='city'){for(let i=0;i<28;i++){let x=i*70,h=35+(i*37)%112;rect(base,x,290-h,60,h,0x537f7b,.35);for(let j=0;j<4;j++)rect(base,x+8+j*12,300-h,5,7,0xfff0cb,.5)}}
   if(dayTheme==='coast'){rect(base,0,300,1880,120,0x78b4b2);for(let i=0;i<12;i++){let x=i*175+20;ell(base,x,315+(i%3)*13,55,13,0x6f9889);for(let j=0;j<3;j++){rect(base,x+j*15-15,291+(i%3)*13,3,20,0x547c6f);ell(base,x+j*15-14,288+(i%3)*13,13,8,0x557d6a)}}}
   else{rect(base,0,290,1880,310,c[2]);for(let i=0;i<35;i++){let x=i*61,y=320+(i%3)*12;rect(base,x,y,6,32,0x725f4b,.8);let leaf=dayTheme==='autumn'?[0xa85f48,0xd79059,0xe1b778][i%3]:[0x618a72,0x7ba383,0x95b28d][i%3];ell(base,x+3,y,24,25,leaf)}}
-  rect(base,0,400,1880,200,0x7da48b);rect(base,0,438,1880,84,0xb09c7b);rect(base,0,445,1880,66,0xe5c99c);
+  if(dayTheme==='coast'){poly(base,[0,390,160,376,350,388,520,376,720,391,915,379,1110,390,1320,378,1510,390,1700,376,1880,386,1880,430,0,430],0xd8cea9);rect(base,0,402,1880,7,0xe5dac0)}rect(base,0,400,1880,200,0x7da48b);for(let z=0;z<110;z++){let fx=(z*137)%1880,fy=525+(z*43)%72;ell(base,fx,fy,5+(z%3)*3,2,0x597f6c,.22);if(z%3===0){ell(base,fx+4,fy-4,2,2,0xf3d7b5,.7);ell(base,fx-3,fy-6,1.5,1.5,0xf3e5b8,.7)}}rect(base,0,438,1880,84,0xb09c7b);rect(base,0,445,1880,66,0xe5c99c);
   for(let i=0;i<36;i++)round(base,i*62,475,28,3,1,0xffeed2,.75);
   // Draw distinct landmarks from each itinerary icon, keeping interactive labels in DOM.
   const nodeXs=localPlans[day].map((_,n)=>145+n*(1590/Math.max(1,localPlans[day].length-1)));
