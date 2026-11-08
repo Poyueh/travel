@@ -148,4 +148,22 @@ document.querySelectorAll('details.day').forEach((day,i)=>{const b=document.crea
 const cards=[{day:'d4',date:'11/12',title:'松島',desc:'海灣、松樹小島與遊船，感受日本三景的海景。',img:'https://www.japan.travel/japan-heritage/app/img/04_matsushima.f818b739.jpg',source:'日本觀光局',url:'https://www.japan.travel/japan-heritage/'},{day:'d6',date:'11/14',title:'川越藏造老街',desc:'走進保留傳統商家建築的小江戶，兩種行程可選。',img:'https://www.japan-guide.com/g20/6501_02.jpg',source:'Japan Guide',url:'https://www.japan-guide.com/e/e6501.html'},{day:'d7',date:'11/15',title:'山寺',desc:'沿石階登上古寺，欣賞山谷與山壁寺院的風景。',img:'https://d3fphkxyf5o5bm.cloudfront.net/image-resize/format%3Dwebp%2Cw%3D1200/1DB1XKRbKjJitagjSenMs4iy9hyJGMzt',source:'Mindtrip',url:'https://mindtrip.ai/attraction/yamagata/yamadera/at-1Q3lAHdC'}];
 const container=guide.querySelector('.photo-cards');cards.forEach(c=>{const card=document.createElement('article');card.className='photo-card';card.innerHTML='<img loading="lazy" alt="'+c.title+'景色" src="'+c.img+'"><div class="photo-card-content"><span class="kicker">'+c.date+'</span><h3>'+c.title+'</h3><p>'+c.desc+'</p><button type="button">查看當日行程 →</button><small>照片來源：<a target="_blank" rel="noopener" href="'+c.url+'">'+c.source+'</a></small></div>';card.querySelector('button').addEventListener('click',()=>openDay(c.day));card.querySelector('img').addEventListener('error',function(){this.style.display='none'});container.appendChild(card)});
 })();
+</script><style id="importance-style">
+.importance-legend{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px;font-size:13px}.importance-legend span,.importance-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-weight:750;font-size:12px;line-height:1.5}.importance-legend .critical,.importance-badge.critical{background:#613528;color:#ffe2cc;border:1px solid #e4a66e}.importance-legend .ticket,.importance-badge.ticket{background:#213f5a;color:#d4ecff;border:1px solid #78b8e4}.importance-legend .option,.importance-badge.option{background:#423452;color:#f1dfff;border:1px solid #be9bdb}.importance-legend .timing{background:#1e4944;color:#cefff1;border:1px solid #7ed2be}
+.entry.important-ticket,.entry.important-critical,.entry.important-option{border-left:4px solid #78b8e4;padding-left:14px}.entry.important-critical{border-left-color:#f1a96d}.entry.important-option{border-left-color:#c6a0e9}.entry .entrytime{display:inline-block;background:#1e4944;color:#d4fff0;border-radius:8px;padding:2px 8px;font-weight:800;margin-bottom:5px}.entry .importance-badge{margin:2px 7px 6px 0}.entrydesc strong,.entrydesc b{color:#ffe5a3;background:#534525;padding:0 3px;border-radius:3px}.day-title .day-date{color:#97e5dc;font-weight:800}details.day{scroll-margin-top:80px}
+</style><script>
+(function(){
+const days=document.getElementById('days');if(!days)return;
+const legend=document.createElement('div');legend.className='importance-legend';legend.setAttribute('aria-label','重要資訊標示說明');legend.innerHTML='<span class="timing">時間</span><span class="ticket">🚆 交通／劃位</span><span class="critical">⚠️ 留意</span><span class="option">🔀 方案／備案</span>';
+const head=days.querySelector('h2');if(head)head.insertAdjacentElement('afterend',legend);
+days.querySelectorAll('.entry').forEach(entry=>{
+ const title=entry.querySelector('.entrytitle');const desc=entry.querySelector('.entrydesc');if(!title)return;
+ const t=(title.textContent+' '+(desc?desc.textContent:''));
+ let type='',label='';
+ if(/趕不上|錯過|末班|關門|截止|取消公園|出改札外|不要只訂/.test(t)){type='critical';label='⚠️ 留意時間與轉乘'}
+ else if(/方案\s*[ABＡＢ]|擇一/.test(t)){type='option';label='🔀 可選方案'}
+ else if(entry.classList.contains('train')&&/指定席|新幹線|はやぶさ|つばさ|とき|かがやき|あさま/.test(t)){type='ticket';label='🚆 確認車次與座位'}
+ if(type){entry.classList.add('important-'+type);const badge=document.createElement('span');badge.className='importance-badge '+type;badge.textContent=label;title.insertAdjacentElement('beforebegin',badge)}
+});
+})();
 </script></body></html>
