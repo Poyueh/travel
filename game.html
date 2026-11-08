@@ -234,10 +234,27 @@ function buildWorld(P){
   const image=new P.Sprite(slices[ix]);image.anchor.set(.5,.9);image.height=160;image.scale.x=image.scale.y;image.position.set(0,43);marker.addChildAt(image,1);marker.landmarkArt.visible=false}
  }catch(e){console.warn('Illustrated world assets unavailable; using fallback',e)}};painted.src='assets/handpainted-objects.svg';
  const travellerImage=new Image();travellerImage.onload=()=>{try{
- const sprite=new P.Sprite(P.Texture.from(travellerImage));sprite.anchor.set(.5,1);sprite.height=82;sprite.scale.x=sprite.scale.y;sprite.position.set(0,25);
- for(const child of worldHero.children)child.visible=false;worldHero.addChild(sprite);worldHero.paintedSprite=sprite;
+ // Rasterize the decoded illustration first, then show it only after an actual texture exists.
+ // Keeping the original children visible until then ensures a playable fallback.
+ const picture=document.createElement('canvas');picture.width=512;picture.height=768;
+ const pc=picture.getContext('2d',{willReadFrequently:true});if(!pc)throw Error('Canvas unavailable');
+ pc.drawImage(travellerImage,0,0,512,768);
+ const pixels=pc.getImageData(0,0,512,768).data;let opaque=false;
+ for(let j=3;j<pixels.length;j+=4){if(pixels[j]>8){opaque=true;break}}
+ if(!opaque)throw Error('Illustration was empty');
+ const texture=P.Texture.from(picture);
+ const showTraveller=()=>{try{
+ if(!texture.baseTexture.valid||!texture.width||!texture.height)return;
+ const fallback=Array.from(worldHero.children);
+ const sprite=new P.Sprite(texture);sprite.anchor.set(.5,1);
+ const factor=82/texture.height;sprite.scale.set(factor);sprite.position.set(0,25);
+ worldHero.addChild(sprite);worldHero.paintedSprite=sprite;
+ for(const child of fallback)child.visible=false;
  worldHero.animateWalk=(t,walking)=>{sprite.y=25+(walking?Math.sin(t/115)*2:0);sprite.rotation=walking?Math.sin(t/230)*.035:0};
- }catch(e){console.warn('Illustrated traveller unavailable; using fallback',e)}};travellerImage.src='assets/traveller-illustrated.svg';
+ }catch(e){console.warn('Traveller replacement unavailable; keeping fallback',e)}};
+ if(texture.baseTexture.valid)showTraveller();else texture.baseTexture.once('loaded',showTraveller);
+ }catch(e){console.warn('Illustrated traveller unavailable; keeping fallback',e)}};
+ travellerImage.onerror=()=>console.warn('Illustrated traveller failed to load; keeping fallback');travellerImage.src='assets/traveller-illustrated.svg';
  for(let i=0;i<24;i++){let a=new P.Graphics();a.beginFill([0xf8e5c3,0xf7cfad,0xe8b897][i%3],.7).drawEllipse(0,0,3,2).endFill();root.addChild(a);worldPetals.push(a)}
  for(let i=0;i<4;i++){let o=objects.find(z=>z.id===['bay','onsen','yamadera','nagano'][i]),a=new P.Graphics();a.beginFill(0xfff8e8).drawRoundedRect(-18,-6,36,12,6).endFill();a.beginFill(0x73b2af).drawRoundedRect(-11,-4,20,4,2).endFill();a.beginFill(0xd38369).drawRect(-14,3,28,2).endFill();root.addChild(a);worldTrains.push({g:a,o,i})}
  worldApp.ticker.add(()=>updateWorld(performance.now()));
